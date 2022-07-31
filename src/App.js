@@ -22,10 +22,16 @@ const TodoItemInputField = (props) => {
   </div>);
 };
 
+const TodoItemList = (props) => {
+  return (<div>
+  </div>);
+};
+
 function App() {
   return (
     <div className="App">
       <TodoItemInputField onSubmit={() => {}} />
+      <TodoItemList />
     </div>
   );
 }
