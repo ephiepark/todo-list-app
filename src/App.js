@@ -140,6 +140,7 @@ function App() {
           todoItemContent: doc.data().todoItemContent,
           isFinished: doc.data().isFinished,
           createdTime: doc.data().createdTime ?? 0,
+          userId: doc.data().userId,
         });
       });
       setTodoItemList(firestoreTodoItemList);
@@ -154,6 +155,7 @@ function App() {
       todoItemContent: newTodoItem,
       isFinished: false,
       createdTime: Math.floor(Date.now() / 1000),
+      userId: currentUser,
     });
     syncTodoItemListStateWithFirestore();
   };
