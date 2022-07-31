@@ -3,6 +3,8 @@ import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 
+let todoItemId = 0;
+
 const TodoItemInputField = (props) => {
   const [input, setInput] = useState("");
 
@@ -34,9 +36,17 @@ const TodoItemList = (props) => {
 function App() {
   const [todoItemList, setTodoItemList] = useState([]);
 
+  const onSubmit = (newTodoItem) => {
+    setTodoItemList([...todoItemList, {
+      id: todoItemId++,
+      todoItemContent: newTodoItem,
+      isFinished: false,
+    }]);
+  };
+
   return (
     <div className="App">
-      <TodoItemInputField onSubmit={() => {}} />
+      <TodoItemInputField onSubmit={onSubmit} />
       <TodoItemList todoItemList={todoItemList} />
     </div>
   );
