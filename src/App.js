@@ -5,6 +5,17 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import Container from '@mui/material/Container';
+import Stack from '@mui/material/Stack';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import IconButton from '@mui/material/IconButton';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Checkbox from '@mui/material/Checkbox';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
@@ -60,23 +71,41 @@ const TodoItemInputField = (props) => {
     setInput("");
   };
 
-  return (<div>
-    <TextField
-      id="todo-item-input"
-      label="Todo Item"
-      variant="outlined"
-      onChange={(e) => setInput(e.target.value)} value={input}
-    />
-    <Button variant="outlined" onClick={onSubmit}>Submit</Button>
-  </div>);
+  return (
+    <Box sx={{margin: "auto"}}>
+      <Stack direction="row" spacing={2} justifyContent="center">
+        <TextField
+          id="todo-item-input"
+          label="Todo Item"
+          variant="outlined"
+          onChange={(e) => setInput(e.target.value)} value={input}
+        />
+        <Button variant="outlined" onClick={onSubmit}>Submit</Button>
+      </Stack>
+    </Box>
+  );
 };
 
 const TodoItem = (props) => {
   const style = props.todoItem.isFinished ? { textDecoration: 'line-through' } : {};
-  return (<li>
-    <span style={style} onClick={() => props.onTodoItemClick(props.todoItem)}>{props.todoItem.todoItemContent}</span>
-    <Button variant="outlined" onClick={() => props.onRemoveClick(props.todoItem)}>Remove</Button>
-  </li>);
+  return (
+    <ListItem secondaryAction={
+      <IconButton edge="end" aria-label="comments" onClick={() => props.onRemoveClick(props.todoItem)}>
+        <DeleteIcon />
+      </IconButton>
+    }>
+      <ListItemButton role={undefined} onClick={() => props.onTodoItemClick(props.todoItem)} dense>
+        <ListItemIcon>
+          <Checkbox
+            edge="start"
+            checked={props.todoItem.isFinished}
+            disableRipple
+          />
+        </ListItemIcon>
+        <ListItemText style={style} primary={props.todoItem.todoItemContent} />
+      </ListItemButton>
+    </ListItem>
+  );
 };
 
 
@@ -89,9 +118,13 @@ const TodoItemList = (props) => {
       onRemoveClick={props.onRemoveClick}
     />;
   });
-  return (<div>
-    <ul>{todoList}</ul>
-  </div>);
+  return (
+    <Box>
+      <List sx={{margin: "auto", maxWidth: 720}}>
+        {todoList}
+      </List>
+    </Box>
+  );
 };
 
 const TodoListAppBar = (props) => {
@@ -108,10 +141,11 @@ const TodoListAppBar = (props) => {
   const button = props.currentUser === null ? loginWithGoogleButton : logoutButton;
   return (
     <AppBar position="static">
-      <Toolbar>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+      <Toolbar sx={{width: "100%", maxWidth: 720, margin: "auto"}}>
+        <Typography variant="h6" component="div">
           Todo List App
         </Typography>
+        <Box sx={{flexGrow: 1}} />
         {button}
       </Toolbar>
     </AppBar>
@@ -176,12 +210,14 @@ function App() {
   return (
     <div className="App">
       <TodoListAppBar currentUser={currentUser} />
-      <TodoItemInputField onSubmit={onSubmit} />
-      <TodoItemList
-        todoItemList={todoItemList}
-        onTodoItemClick={onTodoItemClick}
-        onRemoveClick={onRemoveClick}
-      />
+      <Container sx={{paddingTop: 3}}>
+        <TodoItemInputField onSubmit={onSubmit} />
+        <TodoItemList
+          todoItemList={todoItemList}
+          onTodoItemClick={onTodoItemClick}
+          onRemoveClick={onRemoveClick}
+        />
+      </Container>
     </div>
   );
 }
